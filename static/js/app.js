@@ -35,9 +35,9 @@ function bubbleGraph(x_values, y_values, text_values, mcolours, msizes) {
     
     var layout = {
         title: 'Bubble Chart Hover Text',
-        showlegend: false,
-        height: 600,
-        width: 900
+        showlegend: false
+        // height: 600,
+        // width: 900
     };
     
     Plotly.newPlot('bubble', data, layout);
@@ -45,6 +45,7 @@ function bubbleGraph(x_values, y_values, text_values, mcolours, msizes) {
 
 // metadata display
 function metadataDisplay(myArray) {
+    d3.selectAll('ul').remove();
     var ul = d3.select('#sample-metadata').append('ul').style('list-style-type', 'none').style('margin', '0').style('padding', '0');
     Object.keys(myArray).forEach(k => {
         var text_append = `${k}: ${myArray[k]}`;

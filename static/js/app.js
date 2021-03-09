@@ -1,8 +1,26 @@
-
-
 // define selection dropdown
 var select = d3.select('#selDataset');
 
+// prep for bar chart
+function barPrep(chosen_sample) {
+    var chosen_labels = chosen_sample.otu_ids.slice(0, 10).reverse();
+    var y_values = chosen_labels.map(label => `OTU ${label}`);
+    var labels = chosen_sample.otu_labels.slice(0, 10).reverse();
+    var x_values = chosen_sample.sample_values.slice(0, 10).reverse();
+
+    return [x_values, y_values, labels];
+};
+
+// prep for bubbles
+function bubblePrep (chosen_sample) {
+    var x_bubble = chosen_sample.otu_ids.map(id => +id);
+    var min_bubble = Math.min(...x_bubble);
+    var max_bubble = Math.max(...x_bubble);
+    var y_bubble = chosen_sample.sample_values;
+    var text_bubble = chosen_sample.otu_labels;
+    
+    return [x_bubble, y_bubble, text_bubble, min_bubble, max_bubble];
+};
 
 // horizontal bar chart funct
 function horizGraph(x_values, y_values, labels) {
@@ -54,6 +72,7 @@ function bubbleGraph(x_values, y_values, text_values, mcolours, c_min, c_max, ms
     Plotly.newPlot('bubble', data, layout, config);
 }
 
+
 // metadata display
 function metadataDisplay(myArray) {
     d3.selectAll('ul').remove();
@@ -65,7 +84,34 @@ function metadataDisplay(myArray) {
 }
 
 // washing freq gauge
-
+function makeGauge(wash_val) {
+    var data = [
+        {
+          type: "indicator",
+          mode: "gauge+number+delta",
+          value: wash_val,
+          title: { text: "Wash Frequency", font: { size: 24 } },
+          delta: { reference: wash_val, increasing: { color: "RebeccaPurple" } },
+          gauge: {
+            axis: { range: [0, 9], tickwidth: 1, tickcolor: "darkblue" },
+            bar: { color: "darkblue" },
+            bgcolor: "white",
+            borderwidth: 2,
+            bordercolor: "gray"
+          }
+        }
+      ];
+      
+      var layout = {
+        width: 500,
+        height: 400,
+        margin: { t: 25, r: 25, l: 25, b: 25 },
+        paper_bgcolor: "lavender",
+        font: { color: "darkblue", family: "Arial" }
+      };
+      
+      Plotly.newPlot('gauge', data, layout);
+}
 
 
 
@@ -82,10 +128,31 @@ function showInfo() {
     d3.json('../../samples.json').then(function(data) {
         samples_data = data;
         console.log('data has loaded');
-        // console.log(samples_data);
+        
+        // filling in dropdown info
         var sample_names = samples_data.names;
-        console.log(sample_names.length);
-        appendDropdown(sample_names)
+        appendDropdown(sample_names);
+
+        // choosing an ID at random
+        var random_range = sample_names.length;
+        var randomID = Math.floor(Math.random() * (random_range));
+
+        // applying to metadata
+        var metadataGroup = samples_data.metadata[randomID];
+        metadataDisplay(metadataGroup);
+
+        // making gauge
+        var sample_wash = metadataGroup.wfreq;
+        makeGauge(sample_wash);
+
+        // applying to bar graph
+        var randomSubject = samples_data.samples[randomID]
+        const [x_values, y_values, labels] = barPrep(randomSubject);
+        horizGraph(x_values, y_values, labels);
+
+        // applying to bubble
+        const [x_bubble, y_bubble, text_bubble, min_bubble, max_bubble] = bubblePrep(randomSubject);
+        bubbleGraph(x_bubble, y_bubble, text_bubble, x_bubble, min_bubble, max_bubble, y_bubble);
     });    
 }
 // event handler funct
@@ -93,36 +160,28 @@ function changeHandle() {
     // prevent page reload
     event.preventDefault()
     var chosenID = this.value
-    console.log(chosenID);
     var samples = samples_data.samples;
     var index = ''
     samples.forEach((sample, i) => {
         if (sample.id == chosenID) {
-            // console.log(sample);
-            // console.log(i);
             index = i;
             // bubble
-            // otu_ids will be both x values and colour scale
-            var x_bubble = sample.otu_ids.map(id => +id);
-            var min_bubble = Math.min(...x_bubble);
-            var max_bubble = Math.max(...x_bubble);
-            // sample_values are both y values and bubble sizes
-            var y_bubble = sample.sample_values;
-            var text_bubble = sample.otu_labels;
+            const [x_bubble, y_bubble, text_bubble, min_bubble, max_bubble] = bubblePrep(sample);
             // funct takes x_values, y_values, text_values, mcolours, c_min, c_max, msizes
             bubbleGraph(x_bubble, y_bubble, text_bubble, x_bubble, min_bubble, max_bubble, y_bubble);
 
             // horizontal bar
-            var chosen_labels = sample.otu_ids.slice(0, 10).reverse();
-            var labels_strings = chosen_labels.map(label => `OTU ${label}`);
-            var chosen_hover = sample.otu_labels.slice(0, 10).reverse();
-            var chosen_x = sample.sample_values.slice(0, 10).reverse();
-            horizGraph(chosen_x, labels_strings, chosen_hover);
+            const [x_values, y_values, labels] = barPrep(sample);
+            horizGraph(x_values, y_values, labels);
         }
     });
     // metadata
     var metadataGroup = samples_data.metadata[index];
     metadataDisplay(metadataGroup);
+
+    // gauge
+    var wash_freq = metadataGroup.wfreq;
+    makeGauge(wash_freq);
 };
 // event handler
 select.on('change', changeHandle);

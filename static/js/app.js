@@ -85,32 +85,49 @@ function metadataDisplay(myArray) {
 
 // washing freq gauge
 function makeGauge(wash_val) {
-    var data = [
-        {
-          type: "indicator",
-          mode: "gauge+number+delta",
-          value: wash_val,
-          title: { text: "Wash Frequency", font: { size: 24 } },
-          delta: { reference: wash_val, increasing: { color: "RebeccaPurple" } },
-          gauge: {
-            axis: { range: [0, 9], tickwidth: 1, tickcolor: "darkblue" },
-            bar: { color: "darkblue" },
-            bgcolor: "white",
-            borderwidth: 2,
-            bordercolor: "gray"
-          }
+    var trace = {
+        type: 'pie',
+        showlegend: false,
+        hole: 0.4,
+        rotation: 90,
+        values: [ 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81],
+        text: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
+        direction: 'clockwise',
+        textinfo: 'text',
+        textposition: 'inside',
+        marker: {
+          colors: ['','','','','','','','','','white'],
+          labels: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
+          hoverinfo: 'label'
         }
-      ];
+    }
+  
+    // needle
+    var degrees = 50, radius = .9
+    var radians = degrees * Math.PI / 180
+    var x = -1 * radius * Math.cos(radians) * 9
+    var y = radius * Math.sin(radians)
+
+    var layout = {
+        shapes: [{
+          type: 'line',
+          x0: 0.5,
+          y0: 0.5,
+          x1: 0.6,
+          y1: 0.6,
+          line: {
+            color: 'black',
+            width: 3
+          }
+        }],
+        title: 'Bellybutton washes per week',
+        xaxis: {visible: false, range: [-1, 1]},
+        yaxis: {visible: false, range: [-1, 1]}
+      }
+  
+    var data = [trace]
       
-      var layout = {
-        width: 500,
-        height: 400,
-        margin: { t: 25, r: 25, l: 25, b: 25 },
-        paper_bgcolor: "lavender",
-        font: { color: "darkblue", family: "Arial" }
-      };
-      
-      Plotly.newPlot('gauge', data, layout);
+    Plotly.newPlot('gauge', data, layout);
 }
 
 

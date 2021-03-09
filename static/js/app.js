@@ -19,7 +19,7 @@ function horizGraph(x_values, y_values, labels) {
 };
 
 // bubble chart funct
-function bubbleGraph(x_values, y_values, text_values, mcolours, msizes) {
+function bubbleGraph(x_values, y_values, text_values, mcolours, c_min, c_max, msizes) {
     var trace1 = {
         x: x_values,
         y: y_values,
@@ -27,20 +27,31 @@ function bubbleGraph(x_values, y_values, text_values, mcolours, msizes) {
         mode: 'markers',
         marker: {
           color: mcolours,
-          size: msizes
+        //   colour scheme for bubbles
+          colorscale: 'Rainbow',
+        // minimum/maximum value's colour
+          cmin: c_min,
+          cmax: c_max,
+          size: msizes,
+        //   reducing largest size
+          sizeref: 1.5,
+        //   increasing min size
+          sizemin: 4
         }
     };
       
     var data = [trace1];
     
     var layout = {
-        title: 'Bubble Chart Hover Text',
-        showlegend: false
-        // height: 600,
-        // width: 900
+        showlegend: false,
+        xaxis: {
+            title: 'OTU ID'
+        }
     };
     
-    Plotly.newPlot('bubble', data, layout);
+    var config = {responsive: true}
+
+    Plotly.newPlot('bubble', data, layout, config);
 }
 
 // metadata display
@@ -71,9 +82,9 @@ function showInfo() {
     d3.json('../../samples.json').then(function(data) {
         samples_data = data;
         console.log('data has loaded');
-        
+        // console.log(samples_data);
         var sample_names = samples_data.names;
-    
+        console.log(sample_names.length);
         appendDropdown(sample_names)
     });    
 }
@@ -87,16 +98,19 @@ function changeHandle() {
     var index = ''
     samples.forEach((sample, i) => {
         if (sample.id == chosenID) {
-            console.log(sample);
-            console.log(i);
+            // console.log(sample);
+            // console.log(i);
             index = i;
             // bubble
-            var x_bubble = sample.otu_ids;
+            // otu_ids will be both x values and colour scale
+            var x_bubble = sample.otu_ids.map(id => +id);
+            var min_bubble = Math.min(...x_bubble);
+            var max_bubble = Math.max(...x_bubble);
+            // sample_values are both y values and bubble sizes
             var y_bubble = sample.sample_values;
             var text_bubble = sample.otu_labels;
-            
-            var colour_bubble = 'green';
-            bubbleGraph(x_bubble, y_bubble, text_bubble, colour_bubble, y_bubble);
+            // funct takes x_values, y_values, text_values, mcolours, c_min, c_max, msizes
+            bubbleGraph(x_bubble, y_bubble, text_bubble, x_bubble, min_bubble, max_bubble, y_bubble);
 
             // horizontal bar
             var chosen_labels = sample.otu_ids.slice(0, 10).reverse();

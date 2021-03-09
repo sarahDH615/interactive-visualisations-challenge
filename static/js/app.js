@@ -113,8 +113,8 @@ function makeGauge(wash_val) {
           type: 'line',
           x0: 0.5,
           y0: 0.5,
-          x1: 0.6,
-          y1: 0.6,
+          x1: 0.4,
+          y1: 0.77,
           line: {
             color: 'black',
             width: 3
@@ -122,14 +122,25 @@ function makeGauge(wash_val) {
         }],
         title: 'Bellybutton washes per week',
         xaxis: {visible: false, range: [-1, 1]},
-        yaxis: {visible: false, range: [-1, 1]}
+        yaxis: {visible: false, range: [0, 1]}
       }
   
     var data = [trace]
       
     Plotly.newPlot('gauge', data, layout);
 }
-
+// x1: 0.37, y1: 0.55 - 0-1 washes
+    // x1: 0.35, y1: 0.52 - 0 washes
+    // x1: 0.35, y1: 0.59 - 1 washes
+// x1: 0.37, y1: 0.65 - 1-2 washes
+    // x1: 0.35, y1: 0.72 - 2 washes
+// x1: 0.4, y1: 0.77 - 3 washes
+// x1: 0.35, y1: 0.72 - 2 washes
+// x1: 0.35, y1: 0.72 - 2 washes
+// x1: 0.35, y1: 0.72 - 2 washes
+// x1: 0.35, y1: 0.72 - 2 washes
+// x1: 0.35, y1: 0.72 - 2 washes
+// x1: 0.35, y1: 0.72 - 2 washes
 
 
 // append vals to dropdown funct

@@ -83,6 +83,11 @@ function metadataDisplay(myArray) {
     });
 }
 
+// gauge prep: turning degrees to radians
+function toRad(angle) {
+    return angle * (Math.PI/180);
+}
+
 // washing freq gauge
 function makeGauge(wash_val) {
     var trace = {
@@ -97,31 +102,46 @@ function makeGauge(wash_val) {
         textposition: 'inside',
         marker: {
           colors: ['','','','','','','','','','white'],
-          labels: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
-          hoverinfo: 'label'
+        //   labels: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
+        //   hovermode: false
         }
     }
   
     // needle
-    var degrees = 50, radius = .9
-    var radians = degrees * Math.PI / 180
-    var x = -1 * radius * Math.cos(radians) * 9
-    var y = radius * Math.sin(radians)
+    // adjusting wash_val if it is null
+    if (wash_val == null) {
+        wash_val_for_form = 0;
+    } else {wash_val_for_form = wash_val};
+
+    // radius = 0.45 (pie goes from 0.05 - 0.95 at bottom --> d = 0.9 --> r = 0.45)
+    var radius = 0.45;
+    // wash_val/9 of way of 180 angle of rotation
+    var deg = 180 * (wash_val_for_form/9);
+    // needs converted to rads for Math.cos/.sin
+    var rads = toRad(deg)
+    // x = -1 * radius * cos(radians) OR radius * cos(180-radians)
+    // y = radius * sin(radians)
+    // but this above assumes we are starting at 0, 0
+    // we are actually starting at 0.5, 0.5
+    // so we need to adjust by 0.5 with each number
+    // additionally we need to adjust by a fraction of the radius so the indicator does not go all the way to the edge of the semi-circle
+    var x_val = -4/6 * radius * Math.cos(rads) + 0.5;
+    var y_val = 4/6 * radius * Math.sin(rads) + 0.5;
 
     var layout = {
         shapes: [{
           type: 'line',
           x0: 0.5,
           y0: 0.5,
-          x1: 0.4,
-          y1: 0.77,
+          x1: x_val,
+          y1: y_val,
           line: {
             color: 'black',
             width: 3
           }
         }],
         title: 'Bellybutton washes per week',
-        xaxis: {visible: false, range: [-1, 1]},
+        xaxis: {visible: false, range: [0, 1]},
         yaxis: {visible: false, range: [0, 1]}
       }
   
@@ -129,18 +149,6 @@ function makeGauge(wash_val) {
       
     Plotly.newPlot('gauge', data, layout);
 }
-// x1: 0.37, y1: 0.55 - 0-1 washes
-    // x1: 0.35, y1: 0.52 - 0 washes
-    // x1: 0.35, y1: 0.59 - 1 washes
-// x1: 0.37, y1: 0.65 - 1-2 washes
-    // x1: 0.35, y1: 0.72 - 2 washes
-// x1: 0.4, y1: 0.77 - 3 washes
-// x1: 0.35, y1: 0.72 - 2 washes
-// x1: 0.35, y1: 0.72 - 2 washes
-// x1: 0.35, y1: 0.72 - 2 washes
-// x1: 0.35, y1: 0.72 - 2 washes
-// x1: 0.35, y1: 0.72 - 2 washes
-// x1: 0.35, y1: 0.72 - 2 washes
 
 
 // append vals to dropdown funct

@@ -1,9 +1,14 @@
 // define selection dropdown
 var select = d3.select('#selDataset');
 
+// functions for calling initially and upon selection
+// -----------------------------------------------------------------------------------
 // prep for bar chart
 function barPrep(chosen_sample) {
+    // getting only the ten highest sample values 
+    // (reverse to go from greatest to least on the chart)
     var chosen_labels = chosen_sample.otu_ids.slice(0, 10).reverse();
+    // applying additional text on y values
     var y_values = chosen_labels.map(label => `OTU ${label}`);
     var labels = chosen_sample.otu_labels.slice(0, 10).reverse();
     var x_values = chosen_sample.sample_values.slice(0, 10).reverse();
@@ -13,7 +18,9 @@ function barPrep(chosen_sample) {
 
 // prep for bubbles
 function bubblePrep (chosen_sample) {
+    // changing vals to numeric types
     var x_bubble = chosen_sample.otu_ids.map(id => +id);
+    // getting min and max values for colour scales
     var min_bubble = Math.min(...x_bubble);
     var max_bubble = Math.max(...x_bubble);
     var y_bubble = chosen_sample.sample_values;
@@ -45,15 +52,15 @@ function bubbleGraph(x_values, y_values, text_values, mcolours, c_min, c_max, ms
         mode: 'markers',
         marker: {
           color: mcolours,
-        //   colour scheme for bubbles
+        // colour scheme for bubbles
           colorscale: 'Rainbow',
         // minimum/maximum value's colour
           cmin: c_min,
           cmax: c_max,
           size: msizes,
-        //   reducing largest size
+        // reducing largest size
           sizeref: 1.5,
-        //   increasing min size
+        // increasing min size
           sizemin: 4
         }
     };
@@ -66,7 +73,8 @@ function bubbleGraph(x_values, y_values, text_values, mcolours, c_min, c_max, ms
             title: 'OTU ID'
         }
     };
-    
+
+    // make responsive
     var config = {responsive: true}
 
     Plotly.newPlot('bubble', data, layout, config);
@@ -75,8 +83,11 @@ function bubbleGraph(x_values, y_values, text_values, mcolours, c_min, c_max, ms
 
 // metadata display
 function metadataDisplay(myArray) {
+    // remove any pre-existing lists
     d3.selectAll('ul').remove();
+    // append a ul with no punct, no padding/margin
     var ul = d3.select('#sample-metadata').append('ul').style('list-style-type', 'none').style('margin', '0').style('padding', '0');
+    // for the chosen data point, append each key/val as an li
     Object.keys(myArray).forEach(k => {
         var text_append = `${k}: ${myArray[k]}`;
         ul.append('li').text(text_append);
@@ -131,8 +142,10 @@ function makeGauge(wash_val) {
     var layout = {
         shapes: [{
           type: 'line',
+        // starting point for gauge
           x0: 0.5,
           y0: 0.5,
+        // end that points to value
           x1: x_val,
           y1: y_val,
           line: {
@@ -150,20 +163,25 @@ function makeGauge(wash_val) {
     Plotly.newPlot('gauge', data, layout);
 }
 
-
 // append vals to dropdown funct
 function appendDropdown(dataset) {
+    // append an initial placeholder val to the dropdown 
+    // so the first index can be registered as a change
     select.append('option').text('ID');
+    // append an 'option' for every datum in the dataset
     dataset.forEach(function(info) {
         select.append('option').text(info);
     });
 };
 
+// loading the data
+// initial append based on random data point choice
+// append based on user choice
+// -----------------------------------------------------------------------------------
 // appending to dropdown, loading data
 function showInfo() {
     d3.json('../../samples.json').then(function(data) {
         samples_data = data;
-        console.log('data has loaded');
         
         // filling in dropdown info
         var sample_names = samples_data.names;
@@ -196,10 +214,13 @@ function changeHandle() {
     // prevent page reload
     event.preventDefault()
     var chosenID = this.value
+    // separating out the samples for use in the bubble and bar graphs
     var samples = samples_data.samples;
+    // creating an index value for use in the metadata and gauge
     var index = ''
     samples.forEach((sample, i) => {
         if (sample.id == chosenID) {
+            // assigning the index var to the index no. of the chosen val
             index = i;
             // bubble
             const [x_bubble, y_bubble, text_bubble, min_bubble, max_bubble] = bubblePrep(sample);
@@ -221,4 +242,5 @@ function changeHandle() {
 };
 // event handler
 select.on('change', changeHandle);
+// initial fill of values
 showInfo();

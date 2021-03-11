@@ -90,6 +90,12 @@ function toRad(angle) {
 
 // washing freq gauge
 function makeGauge(wash_val) {
+    // adjusting wash_val if it is null
+    if (wash_val == null) {
+        wash_val_for_form = 0;
+    } else {wash_val_for_form = wash_val};
+
+    // making initial pie to show range of values
     var trace = {
         type: 'pie',
         showlegend: false,
@@ -101,18 +107,12 @@ function makeGauge(wash_val) {
         textinfo: 'text',
         textposition: 'inside',
         marker: {
-          colors: ['','','','','','','','','','white'],
-        //   labels: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
-        //   hovermode: false
-        }
+          colors: ['rgb(242, 247, 230)','rgb(235, 245, 213)','rgb(223, 235, 199)','rgb(210, 224, 182)','rgb(183, 201, 145)','rgb(155, 181, 98)','rgb(146, 181, 71)','rgb(104, 161, 48)','rgb(72, 133, 12)','white']
+        },
+        hoverinfo: 'text'
     }
   
     // needle
-    // adjusting wash_val if it is null
-    if (wash_val == null) {
-        wash_val_for_form = 0;
-    } else {wash_val_for_form = wash_val};
-
     // radius = 0.45 (pie goes from 0.05 - 0.95 at bottom --> d = 0.9 --> r = 0.45)
     var radius = 0.45;
     // wash_val/9 of way of 180 angle of rotation
@@ -140,7 +140,7 @@ function makeGauge(wash_val) {
             width: 3
           }
         }],
-        title: 'Bellybutton washes per week',
+        title: 'Bellybutton Washing Frequency (per week)',
         xaxis: {visible: false, range: [0, 1]},
         yaxis: {visible: false, range: [0, 1]}
       }

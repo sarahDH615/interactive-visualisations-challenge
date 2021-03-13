@@ -25,8 +25,11 @@ function bubblePrep (chosen_sample) {
     var max_bubble = Math.max(...x_bubble);
     var y_bubble = chosen_sample.sample_values;
     var text_bubble = chosen_sample.otu_labels;
-    
-    bubbleGraph(x_bubble, y_bubble, text_bubble, min_bubble, max_bubble);
+
+    // bubbleGraph: otu_ids = x vals, marker colours; sample vals = y vals, marker size
+    // x_values, y_values, text_values, mcolours, c_min, c_max, msizes
+    // == x_bubble, y_bubble, text_bubble, x_bubble, min_bubble, max_bubble, y_bubble
+    bubbleGraph(x_bubble, y_bubble, text_bubble, x_bubble, min_bubble, max_bubble, y_bubble);
 };
 
 // horizontal bar chart funct
@@ -180,7 +183,7 @@ function appendDropdown(dataset) {
 // -----------------------------------------------------------------------------------
 // appending to dropdown, loading data
 function showInfo() {
-    d3.json('https://sarahdh615.github.io/interactive-visualisations-challenge/static/data/samples.json').then(function(data) {
+    d3.json('../data/samples.json').then(function(data) {
         samples_data = data;
         
         // filling in dropdown info

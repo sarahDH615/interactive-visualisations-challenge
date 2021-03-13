@@ -13,7 +13,7 @@ function barPrep(chosen_sample) {
     var labels = chosen_sample.otu_labels.slice(0, 10).reverse();
     var x_values = chosen_sample.sample_values.slice(0, 10).reverse();
 
-    return [x_values, y_values, labels];
+    horizGraph(x_values, y_values, labels);
 };
 
 // prep for bubbles
@@ -26,7 +26,7 @@ function bubblePrep (chosen_sample) {
     var y_bubble = chosen_sample.sample_values;
     var text_bubble = chosen_sample.otu_labels;
     
-    return [x_bubble, y_bubble, text_bubble, min_bubble, max_bubble];
+    bubbleGraph(x_bubble, y_bubble, text_bubble, min_bubble, max_bubble);
 };
 
 // horizontal bar chart funct
@@ -201,12 +201,10 @@ function showInfo() {
 
         // applying to bar graph
         var randomSubject = samples_data.samples[randomID]
-        const [x_values, y_values, labels] = barPrep(randomSubject);
-        horizGraph(x_values, y_values, labels);
+        barPrep(randomSubject);
 
         // applying to bubble
-        const [x_bubble, y_bubble, text_bubble, min_bubble, max_bubble] = bubblePrep(randomSubject);
-        bubbleGraph(x_bubble, y_bubble, text_bubble, x_bubble, min_bubble, max_bubble, y_bubble);
+        bubblePrep(randomSubject);
     });    
 }
 // event handler funct
@@ -223,13 +221,10 @@ function changeHandle() {
             // assigning the index var to the index no. of the chosen val
             index = i;
             // bubble
-            const [x_bubble, y_bubble, text_bubble, min_bubble, max_bubble] = bubblePrep(sample);
-            // funct takes x_values, y_values, text_values, mcolours, c_min, c_max, msizes
-            bubbleGraph(x_bubble, y_bubble, text_bubble, x_bubble, min_bubble, max_bubble, y_bubble);
-
+            bubblePrep(sample);
+            
             // horizontal bar
-            const [x_values, y_values, labels] = barPrep(sample);
-            horizGraph(x_values, y_values, labels);
+            barPrep(sample);
         }
     });
     // metadata

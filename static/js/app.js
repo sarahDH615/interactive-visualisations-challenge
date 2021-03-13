@@ -183,7 +183,7 @@ function appendDropdown(dataset) {
 // -----------------------------------------------------------------------------------
 // appending to dropdown, loading data
 function showInfo() {
-    d3.json('../data/samples.json').then(function(data) {
+    d3.json('https://sarahdh615.github.io/interactive-visualisations-challenge/data/samples.json').then(function(data) {
         samples_data = data;
         
         // filling in dropdown info

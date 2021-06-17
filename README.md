@@ -55,7 +55,7 @@ The goal of this project was to create a webpage that displays one user-chosen r
         - creates a line indicator, with x and y coordinates based on the value of the wash frequency, the radius of the 'pie', and the radians in each segment of the pie
 
 <p align='center'>
-    <img width= '30%' src='/images/dial.png' alt='Gauge'>
+    <img width= '45%' src='/images/dial.png' alt='Gauge'>
 </p>
 
 ### challenges

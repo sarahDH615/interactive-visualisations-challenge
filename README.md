@@ -43,7 +43,9 @@ The goal of this project was to create a webpage that displays one user-chosen r
 3. Demographic Information Section
     - creating a function, metadataDisplay(), which removes any preexisting lists, then loops through the metadata key of the chosen sample, and appends each key-value pair
 
-![Demographic info section](/images/demographics.png)
+<p align='center'>
+    <img width= '20%' src='/images/demographics.png' alt='Demographic info section'>
+</p>
 
 4. Gauge
     - creating a function toRad() that transforms angle measurements into radians
@@ -52,7 +54,9 @@ The goal of this project was to create a webpage that displays one user-chosen r
         - creates a pie chart that only displays the top hemisphere of the 'pie', divided into 9 pieces, labelled 0-9 for the wash frequencies
         - creates a line indicator, with x and y coordinates based on the value of the wash frequency, the radius of the 'pie', and the radians in each segment of the pie
 
-![Gauge](/images/dial.png)
+<p align='center'>
+    <img width= '30%' src='/images/dial.png' alt='Gauge'>
+</p>
 
 ### challenges
 

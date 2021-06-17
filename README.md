@@ -1,8 +1,9 @@
 ## interactive-visualisations-challenge
 
-![Banner](/images/banner.png)
+<!-- ![Banner](/images/banner.png) -->
+[![Banner](/images/banner.png)](https://sarahdh615.github.io/interactive-visualisations-challenge/)
 
-### See the [webpage](https://sarahdh615.github.io/interactive-visualisations-challenge/)
+<!-- ### See the [webpage](https://sarahdh615.github.io/interactive-visualisations-challenge/) -->
 
 ### contains
 - index.html: page displaying the interactive content

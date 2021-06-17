@@ -28,25 +28,22 @@ The goal of this project was to create a webpage that displays one user-chosen r
     - attaching an event listener to the select element holding the dropdown, which is triggered on a change within the select element
     - upon triggering the event, preventing page reload, and feeding the data attached to the chosen ID to the different visualisation functions
 - Creating visualisations:
-
-![horizontal bar chart](/images/horizontalBar.png)
-
 1. Horizontal Bar Chart
     - creating a function, barPrep(), which outputs the data associated with the ten highest OTU IDs
     - feeding that output into another function, horizGraph(), which creates and appends a horizontal bar graph showing the top ten sample values found in the sample
 
-![Bubble chart](/images/bubble.png)
+![horizontal bar chart](/images/horizontalBar.png)
 
 2. Bubble Chart
     - creating a function, bubblePrep(), which changes the type of the OTU ID values to numeric, and finds the maximum and minimum values out of those OTU ID values
     - feeding those outputs into another function, bubbleGraph(), which creates and appends a bubble chart, with OTU ID values as x values, and marker colours, and the sample values as y values and the marker sizes 
 
-![Demographic info section](/images/demographics.png)
+![Bubble chart](/images/bubble.png)
 
 3. Demographic Information Section
     - creating a function, metadataDisplay(), which removes any preexisting lists, then loops through the metadata key of the chosen sample, and appends each key-value pair
 
-![Gauge](/images/dial.png)
+![Demographic info section](/images/demographics.png)
 
 4. Gauge
     - creating a function toRad() that transforms angle measurements into radians
@@ -54,6 +51,8 @@ The goal of this project was to create a webpage that displays one user-chosen r
         - takes the wash frequency (wfreq) from the metadata section of the sample
         - creates a pie chart that only displays the top hemisphere of the 'pie', divided into 9 pieces, labelled 0-9 for the wash frequencies
         - creates a line indicator, with x and y coordinates based on the value of the wash frequency, the radius of the 'pie', and the radians in each segment of the pie
+
+![Gauge](/images/dial.png)
 
 ### challenges
 

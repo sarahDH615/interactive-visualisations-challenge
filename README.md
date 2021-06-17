@@ -1,7 +1,8 @@
 ## interactive-visualisations-challenge
 
-[![Banner](/images/banner.png)](https://sarahdh615.github.io/interactive-visualisations-challenge/)
-<p align='center'><em>Click image to see the website</em></p>
+![Bacteria](/images/bacteria.jpg)
+
+### [Access the website](https://sarahdh615.github.io/interactive-visualisations-challenge/)
 
 ### contains
 - index.html: page displaying the interactive content

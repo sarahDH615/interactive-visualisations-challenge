@@ -1,9 +1,7 @@
 ## interactive-visualisations-challenge
 
-<!-- ![Banner](/images/banner.png) -->
 [![Banner](/images/banner.png)](https://sarahdh615.github.io/interactive-visualisations-challenge/)
 <p align='center'><em>Click image to see the website</em></p>
-<!-- ### See the [webpage](https://sarahdh615.github.io/interactive-visualisations-challenge/) -->
 
 ### contains
 - index.html: page displaying the interactive content
@@ -58,7 +56,14 @@ The goal of this project was to create a webpage that displays one user-chosen r
 ### challenges
 
 One challenge was using functions in combination with each other properly. All of the visualisations on the page depend on the data from samples.json, which is read in in one function, but needs to be accessed in other functions called at different times. The solution was having a function that is called immediately upon page load (showInfo()), and another one that is called upon the event listener trigger, both of which call functions which the data can be fed into. 
+<p align='center'>
+    <img width= '800' src='/images/showInfo.png' alt='Show Info function'>
+    <img width= '800' src='/images/changeHandle.png' alt='Change Handle/Update Code function'>
+</p>
 
 The most challenging component of creating the webpage was the needle on the gauge. The solution was found using the formulae sin(theta) = y/radius and cos(theta) = x/radius, found online, and the fact that theta could be made to depend on the wash frequency (the degrees from the x-axis is based on the percent of the semi-circle taken up by the segment, which could be expressed as 180 degrees times wash frequency divided by nine). These formulae allowed for creating a function that would take in the wash frequency for the user's chosen sample, and apply the x and y coordinates of a line over the semi-circle gauge. 
+<p align='center'>
+    <img width= '800' src='/images/gaugeCode.png' alt='Gauge Needle Code'>
+</p>
 
 One final difficulty was the proper use of file paths when deploying to Git Hub Pages. Using the relative paths that pointed to files on the local computer did not take into account the newly added in repository name in the site URL. The file paths thus needed to be updated within index.html and app.js with absolute paths that properly pointed to the appropriate files. 
